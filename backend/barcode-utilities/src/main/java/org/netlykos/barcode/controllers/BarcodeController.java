@@ -1,14 +1,17 @@
 package org.netlykos.barcode.controllers;
 
-import org.netlykos.barcode.BarcodeGenerator;
+import java.awt.image.BufferedImage;
+
+import org.netlykos.barcode.utilities.BarcodeGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.awt.image.BufferedImage;
-
-import com.google.zxing.WriterException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/barcode")
@@ -30,16 +33,16 @@ public class BarcodeController {
   }
 
   @PostMapping(value = "/pdf417", produces = MediaType.IMAGE_PNG_VALUE)
-  public ResponseEntity<BufferedImage> pdf417Barcode(@RequestBody String barcode) throws WriterException {
+  public ResponseEntity<BufferedImage> pdf417Barcode(@RequestBody String barcode) {
     return okResponse(BarcodeGenerator.generatePDF417BarcodeImage(barcode));
   }
 
   @PostMapping(value = "/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
-  public ResponseEntity<BufferedImage> qrCode(@RequestBody String barcode) throws WriterException {
+  public ResponseEntity<BufferedImage> qrCode(@RequestBody String barcode) {
     return okResponse(BarcodeGenerator.generateQRCodeImage(barcode));
   }
 
-  private ResponseEntity<BufferedImage> okResponse(BufferedImage image) {
+  private static ResponseEntity<BufferedImage> okResponse(BufferedImage image) {
     return new ResponseEntity<>(image, HttpStatus.OK);
   }
 
