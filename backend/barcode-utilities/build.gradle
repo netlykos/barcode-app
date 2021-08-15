@@ -2,6 +2,9 @@ plugins {
   id 'org.netlykos.barcode.java-library-conventions'
 }
 
+def zxingVersion = '3.4.1'
+
 dependencies {
-  // api project(':list')
+  implementation "com.google.zxing:core:${zxingVersion}"
+  implementation "com.google.zxing:javase:${zxingVersion}"
 }

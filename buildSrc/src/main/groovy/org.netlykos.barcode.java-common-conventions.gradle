@@ -5,7 +5,7 @@ plugins {
   id 'jacoco'
   id 'org.sonarqube'
   id 'org.netlykos.barcode.base-conventions'
-}
+ }
 
 group = 'org.netlykos.barcode'
 sourceCompatibility = '11'
@@ -28,6 +28,8 @@ dependencyManagement {
 
 dependencies {
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+  implementation 'org.apache.logging.log4j:log4j-api'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.junit.jupiter:junit-jupiter'
