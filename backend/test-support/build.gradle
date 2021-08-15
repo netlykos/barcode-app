@@ -1,0 +1,3 @@
+plugins {
+  id 'org.netlykos.barcode.java-library-conventions'
+}

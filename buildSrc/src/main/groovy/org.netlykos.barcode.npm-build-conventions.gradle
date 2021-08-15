@@ -1,5 +1,5 @@
 plugins {
-  id 'java'
+  id 'org.netlykos.barcode.base-conventions'
   id 'nebula.node'
 }
 

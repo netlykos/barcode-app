@@ -3,12 +3,8 @@ plugins {
 }
 
 dependencies {
-  implementation 'org.apache.commons:commons-text'
   implementation project(':backend:barcode-utilities')
   implementation project(':frontend:web-app')
-}
-
-application {
-  // Define the main class for the application.
-  mainClass = 'org.netlykos.barcode.app.App'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
