@@ -63,8 +63,9 @@ jacocoTestReport {
 
 sonarqube {
   properties {
-    property "sonar.projectKey", "netlykos_barcode"
+    property "sonar.projectKey", "netlykos_barcode-app"
     property "sonar.organization", "netlykos"
+    property "sonar.projectVersion", version
     property "sonar.host.url", "https://sonarcloud.io"
   }
 }
