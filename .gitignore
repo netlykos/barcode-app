@@ -47,11 +47,7 @@ build
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
 
 # misc
 .?*.sw?
@@ -59,4 +55,3 @@ build
 # System Files
 .DS_Store
 Thumbs.db
-
