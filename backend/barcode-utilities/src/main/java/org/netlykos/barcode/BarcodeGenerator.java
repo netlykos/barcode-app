@@ -1,6 +1,7 @@
 package org.netlykos.barcode;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.Code128Writer;
@@ -38,17 +39,15 @@ public class BarcodeGenerator {
     return MatrixToImageWriter.toBufferedImage(bitMatrix);
   }
 
-  public static BufferedImage generatePDF417BarcodeImage(String barcodeText) {
+  public static BufferedImage generatePDF417BarcodeImage(String barcodeText) throws WriterException {
     PDF417Writer barcodeWriter = new PDF417Writer();
     BitMatrix bitMatrix = barcodeWriter.encode(barcodeText, BarcodeFormat.PDF_417, 700, 700);
-
     return MatrixToImageWriter.toBufferedImage(bitMatrix);
   }
 
-  public static BufferedImage generateQRCodeImage(String barcodeText) {
+  public static BufferedImage generateQRCodeImage(String barcodeText) throws WriterException {
     QRCodeWriter barcodeWriter = new QRCodeWriter();
     BitMatrix bitMatrix = barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, 200, 200);
-
     return MatrixToImageWriter.toBufferedImage(bitMatrix);
   }
 }

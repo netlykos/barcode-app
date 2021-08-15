@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.image.BufferedImage;
 
+import com.google.zxing.WriterException;
+
 @RestController
 @RequestMapping("api/barcode")
 public class BarcodeController {
@@ -28,12 +30,12 @@ public class BarcodeController {
   }
 
   @PostMapping(value = "/pdf417", produces = MediaType.IMAGE_PNG_VALUE)
-  public ResponseEntity<BufferedImage> pdf417Barcode(@RequestBody String barcode) {
+  public ResponseEntity<BufferedImage> pdf417Barcode(@RequestBody String barcode) throws WriterException {
     return okResponse(BarcodeGenerator.generatePDF417BarcodeImage(barcode));
   }
 
   @PostMapping(value = "/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
-  public ResponseEntity<BufferedImage> qrCode(@RequestBody String barcode) {
+  public ResponseEntity<BufferedImage> qrCode(@RequestBody String barcode) throws WriterException {
     return okResponse(BarcodeGenerator.generateQRCodeImage(barcode));
   }
 
