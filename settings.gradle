@@ -1,0 +1,5 @@
+rootProject.name = 'barcode-app'
+include 'backend:app',
+  'backend:barcode-utilities',
+  'backend:test-support',
+  'frontend:web-app'

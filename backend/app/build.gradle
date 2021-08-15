@@ -1,0 +1,10 @@
+plugins {
+  id 'org.netlykos.barcode.java-application-conventions'
+}
+
+dependencies {
+  implementation project(':backend:barcode-utilities')
+  implementation project(':frontend:web-app')
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
