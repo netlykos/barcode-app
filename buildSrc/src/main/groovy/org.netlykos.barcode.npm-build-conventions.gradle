@@ -1,0 +1,12 @@
+plugins {
+  id 'java'
+  id 'nebula.node'
+}
+
+node {
+  version = '14.17.5'
+  npmVersion = '6.14.14'
+  download = true
+}
+
+jar.dependsOn 'npm_run_build'

@@ -1,0 +1,14 @@
+plugins {
+  id 'org.netlykos.barcode.java-application-conventions'
+}
+
+dependencies {
+  implementation 'org.apache.commons:commons-text'
+  implementation project(':backend:barcode-utilities')
+  implementation project(':frontend:web-app')
+}
+
+application {
+  // Define the main class for the application.
+  mainClass = 'org.netlykos.barcode.app.App'
+}
