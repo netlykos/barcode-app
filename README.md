@@ -15,6 +15,10 @@ This project makes use of the __nebula.release__ plugin, which requires one of t
 * candidate
 * final
 
+## Application endpoints
+
+https://<host>:<port>/swagger-ui.html
+
 ## Launching the backend service
 
 

@@ -1,2 +1,18 @@
 server:
   port: 28080
+  error:
+    include-exception: true
+    include-stacktrace: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+logging:
+  pattern:
+    console: '%clr(${LOG_LEVEL_PATTERN:%-5p}) %clr(%d{${LOG_DATEFORMAT_PATTERN:yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${PID:%-5p}){magenta} %clr([%-20.20t]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}'
+  level:
+    org:
+      netlykos: TRACE

@@ -1,4 +1,4 @@
-package org.netlykos.barcode.utilities;
+package org.netlykos.barcode.service;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,18 +15,22 @@ import com.google.zxing.oned.UPCAWriter;
 import com.google.zxing.pdf417.PDF417Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-import org.netlykos.barcode.beans.BarcodeRequest;
-import org.netlykos.barcode.beans.BarcodeResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.netlykos.barcode.beans.BarcodeGenerateRequest;
+import org.netlykos.barcode.beans.BarcodeServiceResponse;
 import org.netlykos.barcode.beans.BarcodeType;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Adi B (netlykos-at-netlykos-dot-org)
- *
  * This class is a singleton that supports generating barcode images of various types.
+ * 
+ * @author Adi B (netlykos-at-netlykos-dot-org)
  */
 @Component
-public class BarcodeGenerator {
+public class BarcodeService {
+
+  private static final Logger LOGGER = LogManager.getLogger(BarcodeService.class);
 
   private Map<BarcodeType, Writer> writers;
   private Map<BarcodeType, BarcodeFormat> formats;
@@ -67,31 +71,34 @@ public class BarcodeGenerator {
     formats = Collections.unmodifiableMap(formatMap);
   }
 
-  public BarcodeResponse generateBarcodeImage(BarcodeRequest request) {
-    return generateBarcodeImage(request.getBarcodeType(), request.getContent(), request.getWidth(),
-        request.getHeight());
+  public BarcodeServiceResponse generateBarcodeImage(BarcodeGenerateRequest request) throws WriterException {
+    return generateBarcodeImage(request.getBarcodeType(), request.getContent(), request.getWidth(), request.getHeight());
   }
 
-  public BarcodeResponse generateBarcodeImage(BarcodeType barcodeType, String text, Integer width, Integer height) {
-    Writer writer = writers.get(barcodeType);
-    BarcodeFormat format = formats.get(barcodeType);
-    Integer barcodeWidth = width == null ? defaultWidths.get(barcodeType) : width;
-    Integer barcodeHeight = height == null ? defaultHeights.get(barcodeType) : height;
-    BarcodeResponse response = new BarcodeResponse().barcodeType(barcodeType).content(text).width(barcodeWidth)
+  public BarcodeServiceResponse generateBarcodeImage(BarcodeType type, String text, Integer width, Integer height) throws WriterException {
+    Writer writer = writers.get(type);
+    BarcodeFormat format = formats.get(type);
+    Integer barcodeWidth = getDefaultIfNotPopulated(width, defaultWidths, type);
+    Integer barcodeHeight = getDefaultIfNotPopulated(height, defaultHeights, type);
+    BarcodeServiceResponse response = new BarcodeServiceResponse().barcodeType(type).content(text).width(barcodeWidth)
         .height(barcodeHeight);
     return generateBarcodeImage(writer, format, response);
   }
 
-  protected BarcodeResponse generateBarcodeImage(Writer writer, BarcodeFormat format, BarcodeResponse barcodeResponse) {
-    String text = barcodeResponse.getContent();
-    Integer width = barcodeResponse.getWidth();
-    Integer height = barcodeResponse.getHeight();
-    try {
-      BitMatrix bitMatrix = writer.encode(text, format, width, height);
-      return barcodeResponse.bufferedImage(MatrixToImageWriter.toBufferedImage(bitMatrix));
-    } catch (WriterException we) {
-      throw new BarcodeGeneratorException(we.getMessage(), we);
+  private BarcodeServiceResponse generateBarcodeImage(Writer writer, BarcodeFormat format, BarcodeServiceResponse response) throws WriterException {
+    String content = response.getContent();
+    Integer width = response.getWidth();
+    Integer height = response.getHeight();
+    LOGGER.debug("Generating a barcode of type [{}] with width [{}], height [{}] and content [{}]", format, width, height, content);
+    BitMatrix bitMatrix = writer.encode(content, format, width, height);
+    return response.bufferedImage(MatrixToImageWriter.toBufferedImage(bitMatrix));
+  }
+
+  private static Integer getDefaultIfNotPopulated(Integer supplied, Map<BarcodeType, Integer> defaultMap, BarcodeType type) {
+    if (supplied == null) {
+      return defaultMap.get(type);
     }
+    return supplied;
   }
 
 }

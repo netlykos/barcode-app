@@ -4,10 +4,12 @@ import java.awt.image.BufferedImage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.netlykos.barcode.beans.BarcodeRequest;
+import org.netlykos.barcode.beans.BarcodeGenerateRequest;
 import org.netlykos.barcode.beans.BarcodeResponse;
+import org.netlykos.barcode.beans.BarcodeServiceResponse;
 import org.netlykos.barcode.beans.BarcodeType;
-import org.netlykos.barcode.utilities.BarcodeGenerator;
+import org.netlykos.barcode.service.BarcodeService;
+import org.netlykos.barcode.utilities.ImageUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -43,12 +47,15 @@ public class BarcodeController {
   private static final String HEADER_X_BARCODE_STRING = "x-barcode-string";
 
   @Autowired
-  private BarcodeGenerator barcodeGenerator;
+  private BarcodeService barcodeService;
 
   @PostMapping("/generate")
-  public ResponseEntity<BarcodeResponse> generate(BarcodeRequest request) {
+  public ResponseEntity<BarcodeResponse> generate(@RequestBody BarcodeGenerateRequest request) {
     try {
-      BarcodeResponse response = barcodeGenerator.generateBarcodeImage(request);
+      BarcodeServiceResponse serviceResponse = barcodeService.generateBarcodeImage(request);
+      BarcodeResponse response = BarcodeResponse.from(serviceResponse);
+      String base64 = ImageUtilities.toBase64Encoding(serviceResponse.getBufferedImage(), ImageUtilities.IMAGE_FORMAT_PNG);
+      response.setBase64EncodedImage(base64);
       return new ResponseEntity<>(response, HttpStatus.OK);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage(), e);
@@ -60,31 +67,32 @@ public class BarcodeController {
   // @formatter:off
   @ApiResponses(
     {
-      @ApiResponse(responseCode = "200", description = "Was able to generate a barcode image with the content supplied.", 
+      @ApiResponse(responseCode = "200", description = "The service was successfully able to generate a barcode image with the content supplied.", 
         content = @Content(mediaType = "image/png"), headers = {
+          @Header(name = HEADER_X_BARCODE_STRING, description = "The barcode content used to generate the barcode image"),
           @Header(name = HEADER_X_IMAGE_HEIGHT, description = "The height of the barcode image"),
-          @Header(name = HEADER_X_IMAGE_WIDTH, description = "The width of the barcode image"),
-          @Header(name = HEADER_X_BARCODE_STRING, description = "The barcode content used to create the barcode image"),
+          @Header(name = HEADER_X_IMAGE_WIDTH, description = "The width of the barcode image")
         }),
-      @ApiResponse(responseCode = "400", description = "The request wasn't properly formed. Either the width was populated, but the height wasnt, or the width was populated, but the height wasnt."),
-      @ApiResponse(responseCode = "418", description = "An internal application error has occured, check the application logs for more details."),
+      @ApiResponse(responseCode = "400", description = "The request wasn't properly formed. Either the width was populated, but the height wasnt, or the width was populated, but the height wasnt.",
+        content = @Content),
+      @ApiResponse(responseCode = "418", description = "An internal application error has occured, check the application logs for more details.", content = @Content)
     }
   )
   // @formatter:on
-  @GetMapping(value = "/generate/{type}/{barcode}/{width}/{height}", produces = MediaType.IMAGE_PNG_VALUE)
+  @GetMapping(value = "/generate/{type}/{barcode}", produces = MediaType.IMAGE_PNG_VALUE)
   public ResponseEntity<BufferedImage> generate(
   //@formatter:off
     @Parameter(description = "The barcode type to be created") @PathVariable(name = "type") BarcodeType type,
     @Parameter(description = "The content to be used to create the given barcode") @PathVariable(name = "barcode") String barcode, 
-    @Parameter(description = "The width of the barcode image to be created") @PathVariable(name = "width", required = false) Integer width,
-    @Parameter(description = "The height of the barcode image be created") @PathVariable(name = "height", required = false) Integer height) 
+    @Parameter(description = "The width of the barcode image to be created", required = false) @RequestParam(name = "width", required = false) Integer width,
+    @Parameter(description = "The height of the barcode image be created", required = false) @RequestParam(name = "height", required = false) Integer height) 
   //@formatter:on
   {
     if ((width != null && height == null) || (width == null && height != null)) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Both width and height need to be provided");
     }
     try {
-      BarcodeResponse response = barcodeGenerator.generateBarcodeImage(type, barcode, width, height);
+      BarcodeServiceResponse response = barcodeService.generateBarcodeImage(type, barcode, width, height);
       HttpHeaders headers = new HttpHeaders();
       headers.set(HEADER_X_IMAGE_HEIGHT, response.getHeight().toString());
       headers.set(HEADER_X_IMAGE_WIDTH, response.getWidth().toString());

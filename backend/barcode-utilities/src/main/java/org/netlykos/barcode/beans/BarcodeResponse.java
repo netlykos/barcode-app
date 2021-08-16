@@ -1,42 +1,26 @@
 package org.netlykos.barcode.beans;
 
-import java.awt.image.BufferedImage;
+public class BarcodeResponse extends BarcodeGenerateRequest {
 
-public class BarcodeResponse extends BarcodeRequest {
+  private String base64EncodedImage;
 
-  private BufferedImage bufferedImage;
-
-  public BufferedImage getBufferedImage() {
-    return bufferedImage;
+  public String getBase64EncodedImage() {
+    return base64EncodedImage;
   }
 
-  public void setBufferedImage(BufferedImage bufferedImage) {
-    this.bufferedImage = bufferedImage;
+  public void setBase64EncodedImage(String base64EncodedImage) {
+    this.base64EncodedImage = base64EncodedImage;
   }
 
-  public BarcodeResponse bufferedImage(BufferedImage bufferedImage) {
-    setBufferedImage(bufferedImage);
+  public BarcodeResponse base64EncodedImage(String base64EncodedImage) {
+    setBase64EncodedImage(base64EncodedImage);
     return this;
   }
 
-  public BarcodeResponse barcodeType(BarcodeType barcodeType) {
-    setBarcodeType(barcodeType);
-    return this;
-  }
-
-  public BarcodeResponse content(String content) {
-    setContent(content);
-    return this;
-  }
-
-  public BarcodeResponse height(Integer height) {
-    setHeight(height);
-    return this;
-  }
-
-  public BarcodeResponse width(Integer width) {
-    setWidth(width);
-    return this;
+  public static <T extends BarcodeBaseBean> BarcodeResponse from(T t) {
+    BarcodeResponse response = new BarcodeResponse();
+    from(t, response);
+    return response;
   }
 
 }
