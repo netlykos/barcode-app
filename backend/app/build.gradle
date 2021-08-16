@@ -3,8 +3,10 @@ plugins {
 }
 
 dependencies {
-  implementation project(':backend:barcode-utilities')
-  implementation project(':frontend:web-app')
-  implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  implementation project(":backend:barcode-utilities")
+  implementation project(":frontend:web-app")
+  implementation "org.springframework.boot:spring-boot-starter-actuator"
+  implementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
+
+	developmentOnly "org.springframework.boot:spring-boot-devtools"
 }
