@@ -5,3 +5,8 @@ plugins {
 jar {
   from 'dist/web-app' into 'static'
 }
+
+task serve(type: NpmTask) {
+  // run the npm serve task
+  args = ['run', 'start']
+}

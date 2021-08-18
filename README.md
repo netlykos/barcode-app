@@ -15,6 +15,18 @@ This project makes use of the __nebula.release__ plugin, which requires one of t
 * candidate
 * final
 
+## Application components
+
+The application is divided into two components - the __frontend__ and the __backend__. It is possible to run and test both in isolation. 
+
+### Application component - frontend
+
+To launch the Angular Web application where node has not been installed on the local system run the gradle task ``./gradlew :frontend:web-app:serve``. This task will download the node and npm version specified in ``buildSrc/src/main/groovy/org.netlykos.barcode.npm-build-conventions.gradle`` and launch the application using this. Users can also make use of the system available node and npm install and run ``npm run start`` from the ``frontend/web-app`` directory.
+
+### Application component - backend
+
+The backend module is broken up into different modules (a __barcode_utilities__ and __app__ component). The __app__ component packages the __frontend:web-app__ and __backend:barcode-utilities__ component into a single jar which can then be used to serve the application.
+
 ## Application endpoints
 
 https://<host>:<port>/swagger-ui.html
@@ -28,4 +40,5 @@ https://<host>:<port>/swagger-ui.html
 ## External links
 
 [SonarQube](https://sonarcloud.io/project/overview?id=netlykos_barcode-app)
+https://careydevelopment.us/blog/how-to-add-a-responsive-sidebar-navigation-menu-to-your-angular-app
 
