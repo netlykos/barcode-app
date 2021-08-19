@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +9,7 @@ import { BarcodeComponent } from './components/barcode/barcode.component';
 import { HomeComponent } from './components/home/home.component';
 import { UtilitiesComponent } from './components/utilities/utilities.component';
 import { MaterialModule } from './material.module';
+import { MenuListItemComponent } from './components/menu-list-item/menu-list-item.component'
 
 @NgModule({
   declarations: [
@@ -16,15 +17,18 @@ import { MaterialModule } from './material.module';
     MaterialLayoutComponent,
     BarcodeComponent,
     HomeComponent,
-    UtilitiesComponent
+    UtilitiesComponent,
+    MenuListItemComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
   ],
-  providers: [],
+  providers: [
+    Title,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

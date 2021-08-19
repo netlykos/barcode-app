@@ -5,10 +5,10 @@ import { HomeComponent } from './components/home/home.component';
 import { UtilitiesComponent } from './components/utilities/utilities.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'barcode', component: BarcodeComponent },
-  { path: 'utilities', component: UtilitiesComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent, data: { title: 'Barcode App' } },
+  { path: 'barcode', component: BarcodeComponent, data: { title: 'Barcode App: Generate' } },
+  { path: 'utilities', component: UtilitiesComponent, data: { title: 'Barcode App: Utilities' } },
 ];
 
 @NgModule({

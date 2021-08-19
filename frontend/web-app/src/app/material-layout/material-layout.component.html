@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="sidenav.toggle()" class="menu-button" fxHide fxShow.lt-md>
     <mat-icon>menu</mat-icon>
   </button>
-  <span>CRM Application</span>
+  <span>{{title}}</span>
 </mat-toolbar>
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="side" [opened]="opened">
