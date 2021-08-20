@@ -10,11 +10,13 @@ import { HomeComponent } from './components/home/home.component';
 import { UtilitiesComponent } from './components/utilities/utilities.component';
 import { MaterialModule } from './material.module';
 import { MenuListItemComponent } from './components/menu-list-item/menu-list-item.component'
+import { LayoutComponent } from './components/site/layout/layout.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     MaterialLayoutComponent,
+    LayoutComponent,
     BarcodeComponent,
     HomeComponent,
     UtilitiesComponent,

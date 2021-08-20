@@ -22,12 +22,12 @@ export class MaterialLayoutComponent implements OnDestroy, OnInit {
   @Output() title: string = this.defaultTitle;
 
   constructor(private media: MediaObserver, private titleService: Title, private router: Router, private activatedRoute: ActivatedRoute) {
-    this.mediaWatcher = this.media.media$.subscribe((mediaChange: MediaChange) => {
-      this.handleMediaChange(mediaChange)
+    this.mediaWatcher = this.media.asObservable().subscribe((mediaChanges: MediaChange[]) => {
+      this.handleMediaChange(mediaChanges)
     })
   }
 
-  private handleMediaChange(mediaChange: MediaChange) {
+  private handleMediaChange(mediaChanges: MediaChange[]) {
     if (this.media.isActive('lt-md')) {
       this.opened = false
     } else {

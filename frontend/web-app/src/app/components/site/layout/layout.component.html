@@ -1,0 +1,18 @@
+<!-- this is top of the page tool bar-->
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenav.toggle()" class="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{pageTitle}}</span>
+
+</mat-toolbar>
+<mat-sidenav-container>
+  <!-- this is the side navigation pane -->
+  <mat-sidenav #sidenav mode="over" color="secondary">
+    Side Navigation
+  </mat-sidenav>
+  <!-- this is where output from the main content will go, currently it's populated by the router component -->
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
