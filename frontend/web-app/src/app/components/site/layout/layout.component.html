@@ -9,7 +9,16 @@
 <mat-sidenav-container>
   <!-- this is the side navigation pane -->
   <mat-sidenav #sidenav mode="over" color="secondary">
-    Side Navigation
+    <mat-nav-list>
+      <mat-list-item *ngFor="let menuOption of menuOptions">
+        <a matLine (click)="selectMenuOption(menuOption)">
+          <button mat-icon-button>
+            <mat-icon>{{ menuOption.iconName }}</mat-icon>
+          </button>
+          {{ menuOption.displayName }}
+        </a>
+      </mat-list-item>
+    </mat-nav-list>
   </mat-sidenav>
   <!-- this is where output from the main content will go, currently it's populated by the router component -->
   <mat-sidenav-content>

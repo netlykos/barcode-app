@@ -22,7 +22,8 @@ repositories {
 
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.boot:spring-boot-dependencies:2.5.+"
+    mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
   }
 }
 
