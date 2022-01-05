@@ -15,6 +15,7 @@ hs_err_pid*
 #Default gradle
 .gradle
 build/
+.angular
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
