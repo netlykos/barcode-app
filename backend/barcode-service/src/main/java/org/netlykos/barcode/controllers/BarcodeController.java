@@ -29,12 +29,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * @author Adi B (netlykos-at-netlykos-dot-org)
- * 
- * The {@link BarcodeController} class defines the endpoints related to barcode generation. The barcode created can be 
+ *
+ * The {@link BarcodeController} class defines the endpoints related to barcode generation. The barcode created can be
  * imbedded inline using a <i>get</i> request, or as part of a request/response using a <i>put</i> method.
  */
 @RestController
@@ -45,6 +44,7 @@ public class BarcodeController {
   private static final String HEADER_X_IMAGE_HEIGHT = "x-image-height";
   private static final String HEADER_X_IMAGE_WIDTH = "x-image-width";
   private static final String HEADER_X_BARCODE_STRING = "x-barcode-string";
+  private static final String RESPONSE_APPLICATION_FAILURE = "Application failure - check server logs.";
 
   @Autowired
   private BarcodeService barcodeService;
@@ -59,40 +59,60 @@ public class BarcodeController {
       return new ResponseEntity<>(response, HttpStatus.OK);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage(), e);
-      throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Application failure - check server logs.");
+      throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, RESPONSE_APPLICATION_FAILURE, null);
     }
   }
 
   @Operation(summary = "Create a barcode image with the arguments provided")
   // @formatter:off
-  @ApiResponses(
-    {
-      @ApiResponse(responseCode = "200", description = "The service was successfully able to generate a barcode image with the content supplied.", 
-        content = @Content(mediaType = "image/png"), headers = {
-          @Header(name = HEADER_X_BARCODE_STRING, description = "The barcode content used to generate the barcode image"),
-          @Header(name = HEADER_X_IMAGE_HEIGHT, description = "The height of the barcode image"),
-          @Header(name = HEADER_X_IMAGE_WIDTH, description = "The width of the barcode image")
-        }),
-      @ApiResponse(responseCode = "400", description = "The request wasn't properly formed. Either the width was populated, but the height wasnt, or the width was populated, but the height wasnt.",
-        content = @Content),
-      @ApiResponse(responseCode = "418", description = "An internal application error has occured, check the application logs for more details.", content = @Content)
-    }
-  )
+  @ApiResponse(responseCode = "200", description = "The service was successfully able to generate a barcode image with the content supplied.",
+    content = @Content(mediaType = "image/png"), headers = {
+    @Header(name = HEADER_X_BARCODE_STRING, description = "The barcode content used to generate the barcode image"),
+    @Header(name = HEADER_X_IMAGE_HEIGHT, description = "The height of the barcode image"),
+    @Header(name = HEADER_X_IMAGE_WIDTH, description = "The width of the barcode image")
+  })
+  @ApiResponse(responseCode = "400", description = "The request wasn't properly formed. Either the width was populated, but the height wasn't, or the width was populated, but the height wasn't.",
+    content = @Content)
+  @ApiResponse(responseCode = "418", description = "An internal application error has occurred, check the application logs for more details.", content = @Content)
   // @formatter:on
   @GetMapping(value = "/generate/{type}/{barcode}", produces = MediaType.IMAGE_PNG_VALUE)
   public ResponseEntity<BufferedImage> generate(
   //@formatter:off
     @Parameter(description = "The barcode type to be created") @PathVariable(name = "type") BarcodeType type,
-    @Parameter(description = "The content to be used to create the given barcode") @PathVariable(name = "barcode") String barcode, 
+    @Parameter(description = "The content to be used to create the given barcode") @PathVariable(name = "content") String content,
     @Parameter(description = "The width of the barcode image to be created", required = false) @RequestParam(name = "width", required = false) Integer width,
-    @Parameter(description = "The height of the barcode image be created", required = false) @RequestParam(name = "height", required = false) Integer height) 
+    @Parameter(description = "The height of the barcode image be created", required = false) @RequestParam(name = "height", required = false) Integer height)
+  //@formatter:on
+  {
+    return create(type, content, width, height);
+  }
+
+  @Operation(summary = "Create a barcode image with the query arguments provided")
+  // @formatter:off
+  @ApiResponse(responseCode = "200", description = "The service was successfully able to generate a barcode image with the query parameters supplied.",
+    content = @Content(mediaType = "image/png"), headers = {
+    @Header(name = HEADER_X_BARCODE_STRING, description = "The barcode content used to generate the barcode image"),
+    @Header(name = HEADER_X_IMAGE_HEIGHT, description = "The height of the barcode image"),
+    @Header(name = HEADER_X_IMAGE_WIDTH, description = "The width of the barcode image")
+  })
+  @ApiResponse(responseCode = "400", description = "The request wasn't properly formed. Either the width was populated, but the height wasn't, or the width was populated, but the height wasn't.",
+    content = @Content)
+  @ApiResponse(responseCode = "418", description = "An internal application error has occurred, check the application logs for more details.", content = @Content)
+  // @formatter:on
+  @GetMapping(value = "/create", produces = MediaType.IMAGE_PNG_VALUE)
+  public ResponseEntity<BufferedImage> create(
+  //@formatter:off
+    @Parameter(description = "The barcode type to be created") @RequestParam(name = "type") BarcodeType type,
+    @Parameter(description = "The content to be used to create the given barcode") @RequestParam(name = "content") String content,
+    @Parameter(description = "The width of the barcode image to be created", required = false) @RequestParam(name = "width", required = false) Integer width,
+    @Parameter(description = "The height of the barcode image be created", required = false) @RequestParam(name = "height", required = false) Integer height)
   //@formatter:on
   {
     if ((width != null && height == null) || (width == null && height != null)) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Both width and height need to be provided");
     }
     try {
-      BarcodeServiceResponse response = barcodeService.generateBarcodeImage(type, barcode, width, height);
+      BarcodeServiceResponse response = barcodeService.generateBarcodeImage(type, content, width, height);
       HttpHeaders headers = new HttpHeaders();
       headers.set(HEADER_X_IMAGE_HEIGHT, response.getHeight().toString());
       headers.set(HEADER_X_IMAGE_WIDTH, response.getWidth().toString());
@@ -100,7 +120,7 @@ public class BarcodeController {
       return ResponseEntity.ok().headers(headers).body(response.getBufferedImage());
     } catch (Exception e) {
       LOGGER.warn(e.getMessage(), e);
-      throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Application failure - check server logs.");
+      throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, RESPONSE_APPLICATION_FAILURE, null);
     }
   }
 

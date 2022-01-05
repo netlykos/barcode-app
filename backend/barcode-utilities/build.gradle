@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-  implementation "org.springframework.boot:spring-boot-starter-web"
-  implementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
   implementation "com.google.zxing:core:${zxingVersion}"
   implementation "com.google.zxing:javase:${zxingVersion}"
+  implementation 'javax.validation:validation-api'
+  implementation 'org.springframework:spring-context'
 }

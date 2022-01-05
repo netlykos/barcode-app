@@ -1,4 +1,5 @@
 # barcode-app
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=netlykos_barcode-app&metric=alert_status)](https://sonarcloud.io/dashboard?id=netlykos_barcode-app)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=netlykos_barcode-app&metric=coverage)](https://sonarcloud.io/dashboard?id=netlykos_barcode-app)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=netlykos_barcode-app&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=netlykos_barcode-app)
@@ -12,7 +13,7 @@ This project makes use of the __nebula.release__ plugin, which requires one of t
 
 ## Application sections
 
-The application is divided into two main section(s) - the __frontend__ and the __backend__. It is possible to run and test both in isolation. The backend component includes multiple spring boot/cloud related technologies that are considered best practicese for enterprise applications. These components are:
+The application is divided into two main section(s) - the __frontend__ and the __backend__. It is possible to run and test both in isolation. The backend component includes multiple spring boot/cloud related technologies that are considered best practices for enterprise applications. These components are:
 
 * barcode-config-server
 * barcode-config-server
@@ -30,17 +31,22 @@ The backend module is broken up into different modules (a __barcode_utilities__ 
 
 ## Application endpoints
 
-https://<host>:<port>/swagger-ui.html
 
 ## Launching the backend service
 
+Users can test the backend service independent of the complete application by launching main from __``backend/barcode-service/src/test/java/org/netlykos/barcode/LocalApp.java``__. In this case, the process will use the spring boot application configuration from the file __``backend/test-support/src/main/resources/application.yml``__ to launch the process. The welcome page will be hosted at [https://localhost:28080/](https://localhost:28080/).
 
 ## Launching the web application
 
+## Upgrading/Dependencies version management
+
+### Spring Boot
+
+``/buildSrc/build.gradle``
+``/gradle.properties``
 
 ## External links
 
 [SonarQube](https://sonarcloud.io/project/overview?id=netlykos_barcode-app)
 [Menu Generation](https://careydevelopment.us/blog/how-to-add-a-responsive-sidebar-navigation-menu-to-your-angular-app)
 [Theme Selector](https://indepth.dev/posts/1218/lets-implement-a-theme-switch-like-the-angular-material-site)
-

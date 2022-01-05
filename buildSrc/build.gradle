@@ -12,7 +12,7 @@ dependencies {
   // id "nebula.node" version "1.4.2"
   implementation("com.netflix.nebula:nebula-node-plugin:1.4.+")
   // id "nebula.info" version "10.0.0"
-  implementation("com.netflix.nebula:gradle-info-plugin:10.0.0")
+  implementation("com.netflix.nebula:gradle-info-plugin:10.0.+")
   // setting this here doesn't seem to work, is instead in the ${projectBase}/build.gradle file
   // id "nebula.release" version "16.0.0"
   // implementation("com.netflix.nebula:nebula-release-plugin:16.0.0")
@@ -22,5 +22,5 @@ dependencies {
   implementation("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.+")
   // id "org.springframework.boot" version "2.5.6"
   // The value springBooVersion should be used here, however plugins cannot seem to reference this property. :\
-  implementation("org.springframework.boot:spring-boot-gradle-plugin:2.5.+")
+  implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.+")
 }

@@ -1,8 +1,5 @@
 rootProject.name = 'barcode-app'
 include \
-  'backend:barcode-config-serice',
-  'backend:barcode-gateway-service',
-  'backend:barcode-registry-service',
   'backend:barcode-service',
   'backend:barcode-utilities',
   'backend:test-support',
