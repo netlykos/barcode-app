@@ -1,7 +1,7 @@
-export interface Menu {
+export interface NavRoute {
   title: string;
   icon: string;
   display: string;
   route: string;
-  children?: Menu[];
+  children?: NavRoute;
 }

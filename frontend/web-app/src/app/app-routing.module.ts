@@ -6,13 +6,15 @@ import { UtilitiesComponent } from './components/utilities/utilities.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, data: { title: 'Barcode App' } },
-  { path: 'barcode', component: BarcodeComponent, data: { title: 'Barcode App: Generate' } },
-  { path: 'utilities', component: UtilitiesComponent, data: { title: 'Barcode App: Utilities' } },
+  { path: 'home', component: HomeComponent, data: { title: 'Barcode App', icon: 'home', display: 'home' } },
+  { path: 'barcode', component: BarcodeComponent, data: { title: 'Barcode App: Generate', icon: 'line_style', display: 'Barcode' } },
+  { path: 'utilities', component: UtilitiesComponent, data: { title: 'Barcode App: Utilities', icon: 'build', display: 'Utilities' } },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+
+}
